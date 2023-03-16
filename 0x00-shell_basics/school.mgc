@@ -1,2 +1,2 @@
 #!/bin/bash
-file -m /path/to/alx-system_engineering-devops/0x00-shell_basics/school.mgc "$1" | grep -q "School data file" && echo "$1 is a School data file." || echo "$1 is not a School data file."
+file -i * | grep -o '^[^:]*' | sort
