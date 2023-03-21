@@ -1,2 +1,2 @@
 #!/bin/bash
-HBTN=89 compgen -v
+export HBTN=89
