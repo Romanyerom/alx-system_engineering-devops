@@ -1,2 +1,2 @@
 #!/bin/bash
-compgen -v
+HBTN=89 compgen -v
