@@ -1,2 +1,2 @@
 #!/bin/bash
-ls -1 | grep -E '^[0-9]+-.+' | sort
+paste -d, - - | cut -d, -f1
