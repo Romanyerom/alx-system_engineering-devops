@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Split the PATH variable by the ':' separator and count the number of elements
+num_dirs=$(echo $PATH | tr ':' '\n' | wc -l)
+
+echo "There are $num_dirs directories in the PATH."
