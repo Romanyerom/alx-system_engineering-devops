@@ -1,7 +1,2 @@
 #!/bin/bash
-
-# Store the contents of the file "iacta" in an array
-mapfile -t lines < iacta
-
-# Display the third line
-echo "${lines[2]}"
+head -3 iacta | tail -1
