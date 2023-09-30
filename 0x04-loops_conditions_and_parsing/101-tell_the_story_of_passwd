@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-
 # Read the /etc/passwd file line by line
+
 while IFS=: read -r username _ uid gid info home shell; do
     # Extract the user info part
     user_info=$(echo "$info" | cut -d',' -f1)

@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
-# This is a comment to satisfy the second line requirement.
+# Displays the time for 12 horus and 59 minutes.
+#   Displays hours from 0 to 12
+#   Displays minutes from 1 to 59
 
-for hour in {0..12}; do
-    echo "Hour: $hour"
-    for minute in {1..59}; do
-        echo "$minute"
-    done
+hour=0
+while [ $hour -le 12 ]
+do
+	echo "Hour: $hour"
+	minute=1
+	while [ $minute -le 59 ]
+	do
+		echo "$minute"
+		(( minute++ ))
+	done
+	(( hour++ ))
 done
