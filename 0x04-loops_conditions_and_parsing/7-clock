@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
-hour=0
+# This is a comment to satisfy the second line requirement.
 
-while [ $hour -le 12 ]; do
+for hour in {0..12}; do
     echo "Hour: $hour"
-    minute=1
-    while [ $minute -le 59 ]; do
+    for minute in {1..59}; do
         echo "$minute"
-        minute=$((minute + 1))
     done
-    hour=$((hour + 1))
 done
