@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+#This script displays listening ports along with the PID and program nam
+
+# Display header
+echo "Active Internet connections (only servers)"
+echo "Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name"
+
+# List TCP listening ports
+netstat -tuln | grep -E 'tcp[[:space:]]+[0-9]+' | awk '{print "tcp", $6, $4, $7}' | while read proto recvq sendq local foreign; do
+    port=$(echo "$local" | awk -F':' '{print $2}')
+    program_name=$(sudo lsof -i :$port -sTCP:LISTEN -t -n -P)
+    if [ -z "$program_name" ]; then
+        program_name="N/A"
+    fi
+    echo "tcp        $recvq      $sendq      $local      $foreign     LISTEN      $program_name"
+done
+
+# List UDP listening ports
+netstat -uln | grep -E 'udp[[:space:]]+[0-9]+' | awk '{print "udp", "-", "-", $4, $7}' | while read proto recvq sendq local foreign; do
+    port=$(echo "$local" | awk -F':' '{print $2}')
+    program_name=$(sudo lsof -i :$port -sUDP:LISTEN -t -n -P)
+    if [ -z "$program_name" ]; then
+        program_name="N/A"
+    fi
+    echo "udp        -      -      $local      $foreign                $program_name"
+done
+
+# Display header for UNIX domain sockets
+echo "Active UNIX domain sockets (only servers)"
+echo "Proto RefCnt Flags       Type       State         I-Node   PID/Program name    Path"
+
+# List UNIX domain sockets
+netstat -lx | grep "LISTEN" | awk '{print "unix", "-", "[ACC]", $1, $6, $7, $8}' | while read proto refcnt flags type state inode path; do
+    program_name=$(sudo fuser $path 2>/dev/null)
+    if [ -z "$program_name" ]; then
+        program_name="N/A"
+    fi
+    echo "unix  $refcnt  $flags  $type  $state  $inode  $program_name  $path"
+done
