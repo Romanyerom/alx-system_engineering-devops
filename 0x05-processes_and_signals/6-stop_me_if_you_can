@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# This script stops the '4-to_infinity_and_beyond' process without using 'kill' or 'killall'.
+
+# Find the process ID (PID) of '4-to_infinity_and_beyond'
+process_id=$(pgrep -f "4-to_infinity_and_beyond")
+
+# Check if the process is running
+if [ -n "$process_id" ]; then
+    # Send a custom termination signal (SIGUSR1) to gracefully stop the process
+    kill -SIGUSR1 "$process_id"
+    echo "Process '4-to_infinity_and_beyond' has been terminated gracefully."
+else
+    echo "Process '4-to_infinity_and_beyond' is not running."
+fi

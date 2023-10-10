@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# This script checks if the process '4-to_infinity_and_beyond' is running and stops it if it is.
+
+# Check if the process is running
+if pgrep -f "4-to_infinity_and_beyond" > /dev/null; then
+    # If it is running, send a termination signal (SIGTERM)
+    pkill -TERM -f "4-to_infinity_and_beyond"
+    echo "Process '4-to_infinity_and_beyond' has been terminated."
+else
+    echo "Process '4-to_infinity_and_beyond' is not running."
+fi
