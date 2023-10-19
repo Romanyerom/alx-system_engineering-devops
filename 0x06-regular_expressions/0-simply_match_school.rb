@@ -4,7 +4,8 @@ arg = ARGV[0]
 
 def match_school(arg)
   if arg.match(/School/)
-    puts "School"
+     modified_string = arg.scan(/School/).join
+    puts modified_string
   else
     puts ""
   end
