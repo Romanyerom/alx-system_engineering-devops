@@ -1,14 +1,5 @@
 #!/usr/bin/env bash
-# Display the PID and process name of processes containing the word "bash".
+# Displays the PID along with the process name, of 
+#+ processes whose name contains the word "bash".
 
-# Get the list of directories in /proc that are numeric (representing PIDs)
-pids=($(ls -d /proc/[0-9]* 2>/dev/null))
-
-# Loop through each PID directory and check the process name
-for pid_dir in "${pids[@]}"; do
-    pid=$(basename "$pid_dir")
-    cmd=$(cat "$pid_dir/cmdline" 2>/dev/null | tr -d '\0')  # Read the process name
-    if [[ "$cmd" == *bash* ]]; then
-        echo "$pid $cmd"
-    fi
-done
+pgrep bash -l
