@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Create an RSA key pair with a passphrase
+ssh-keygen -t rsa -b 4096 -f school -N betty
+
+echo "RSA key pair created successfully."
