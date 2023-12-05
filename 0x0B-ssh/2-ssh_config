@@ -1,0 +1,5 @@
+# 2-ssh_config
+
+Host 54.157.163.155
+    IdentityFile ~/.ssh/school
+    PasswordAuthentication no
