@@ -1,4 +1,3 @@
-#!/user/bin/pup
 # 1-install_a_package.pp
 
 package { 'Flask':
