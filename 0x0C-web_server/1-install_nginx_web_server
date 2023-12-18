@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Commands to install nginx web server
+# Commands to install nginx web server and configure it to display "Hello World!"
 
 # Update the package list
 sudo apt-get update
@@ -17,6 +17,17 @@ echo "<html><body>Hello World!</body></html>" | sudo tee /var/www/html/index.htm
 if sudo nginx -t; then
     # Reload nginx to apply changes
     sudo service nginx reload
+
+    # Wait for a moment to ensure Nginx reloads before testing
+    sleep 2
+
+    # Test if Nginx returns the expected "Hello World!" content
+    response=$(curl -s http://localhost/)
+    if [[ "$response" == *"Hello World!"* ]]; then
+        echo "Nginx is correctly configured and returns 'Hello World!'"
+    else
+        echo "Nginx is not returning the expected content. Please check the configuration."
+    fi
 else
     echo "Nginx configuration test failed. Please check the configuration."
 fi
