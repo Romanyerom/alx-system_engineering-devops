@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+#start apachi2 inside docker
+service apachi2 start
