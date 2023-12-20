@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# 
+
+# Updating packages
+sudo apt-get update
+sudo apt-get -y install nginx
+
+# Creating an index page
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Performing a redirection
+new_string="server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/Romanyerom permanent;"
+
+sudo sed -i "s/server_name _;/$new_string/" /etc/nginx/sites-enabled/default
+
+# creating a custom error page
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+
+# Custom http responce header
+sudo sed -i "/server_name _/a \ \ \ \ add_header X-Served-By $hostname;" /etc/nginx/sites-enabled/default
+
+# Test for syntax erroes
+sudo nginx -t
+
+# Restart Nginx to apply the changes
+sudo service nginx restart
