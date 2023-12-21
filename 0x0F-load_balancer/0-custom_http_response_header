@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 
+# Comfiguring web-01 to have http responce header 
 
 # Updating packages
 sudo apt-get update
@@ -17,7 +17,7 @@ sudo sed -i "s/server_name _;/$new_string/" /etc/nginx/sites-enabled/default
 echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
 
 # Custom http responce header
-sudo sed -i "/server_name _/a \ \ \ \ add_header X-Served-By $hostname;" /etc/nginx/sites-enabled/default
+sudo sed -i "/server_name _/a add_header X-Served-By $HOSTNAME;" /etc/nginx/sites-enabled/default
 
 # Test for syntax erroes
 sudo nginx -t
