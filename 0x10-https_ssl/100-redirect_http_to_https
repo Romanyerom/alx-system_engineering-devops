@@ -37,15 +37,18 @@ defaults
 frontend Romanyerom_front_end
     bind *:80
     bind *:443 ssl crt /etc/haproxy/certs/www.Romanyerom.tech.pem
-    http-request redirect scheme https unless { ssl_fc }
     http-request set-header X-Forwarded-Proto https
     default_backend Romanyerom_back_end
 
+frontend http-redirect
+    bind *:80
+    mode http
+    option forwardfor
+    reqadd X-Forwarded-Proto:\ http
+    reqadd Host:\ www.Romanyerom.tech
+    redirect scheme https code 301 if !{ ssl_fc }
+
 backend Romanyerom_back_end
     balance roundrobin
-    
     server 176572-web-01 52.86.231.254:80 check
-    server 176572-web-02 3.84.158.211:80  check
-
-backend letsencrypt-backend
-    server letsencrypt 127.0.0.1:54321
+    server 176572-web-02 3.84.158.211:80 check
