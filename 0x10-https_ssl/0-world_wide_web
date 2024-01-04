@@ -4,8 +4,20 @@
 domain_information() {
     local domain="$1"
     local subdomain="$2"
+
+    if ! command -v dig &>/dev/null || ! command -v awk &>/dev/null; then
+        echo "Error: Required commands 'dig' and 'awk' not found. Please install them."
+        exit 1
+    fi
+
     local line
-    line=$(dig "$subdomain"."$domain" | awk '/ANSWER SECTION:/ {getline; print; getline; print}')
+    line=$(dig "$subdomain"."$domain" +short | awk '/./ {print}')
+    
+    if [ -z "$line" ]; then
+        echo "Error: Subdomain '$subdomain' not found for domain '$domain'."
+        exit 1
+    fi
+    
     echo "$subdomain $line" | awk '{printf "The subdomain %s is a %s record and points to %s\n", $1, $2, $3}'
 }
 
@@ -16,4 +28,6 @@ if [ "$#" -eq 1 ]; then
     domain_information "$1" "web-02"
 elif [ "$#" -eq 2 ]; then
     domain_information "$1" "$2"
+else
+    echo "Usage: $0 <domain> [subdomain]"
 fi
