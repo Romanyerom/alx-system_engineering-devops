@@ -39,7 +39,7 @@ frontend Romanyerom_front_end
     bind *:443 ssl crt /etc/haproxy/certs/www.Romanyerom.tech.pem
     http-request redirect scheme https unless { ssl_fc }
     http-request set-header X-Forwarded-Proto https
-    default_backend besthor_back_end
+    default_backend Romanyerom_back_end
 
 backend Romanyerom_back_end
     balance roundrobin
