@@ -4,13 +4,46 @@
 # Distribute requests using a roundrobin algorithm
 # Make sure that HAProxy can be managed via an init script
 
-# Install and configure HAproxy on my lb-01 server.
-sudo apt-get -y update
-sudo apt-get -y install haproxy
+# Check for root privileges
+if [ "$(id -u)" -ne 0 ]; then
+    echo "This script must be run as root" >&2
+    exit 1
+fi
 
-# Edit the HAProxy configuration file
-server_config=\
-"
+# Update package repository
+apt-get update
+
+# Install HAProxy
+apt-get -y install haproxy
+
+# Configure HAProxy
+cat <<EOT | sudo tee /etc/haproxy/haproxy.cfg
+global
+    log /dev/log    local0
+    log /dev/log    local1 notice
+    chroot /var/lib/haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level admin
+    stats timeout 30s
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log     global
+    mode    http
+    option  httplog
+    option  dontlognull
+    timeout connect 5000
+    timeout client  50000
+    timeout server  50000
+    errorfile 400 /etc/haproxy/errors/400.http
+    errorfile 403 /etc/haproxy/errors/403.http
+    errorfile 408 /etc/haproxy/errors/408.http
+    errorfile 500 /etc/haproxy/errors/500.http
+    errorfile 502 /etc/haproxy/errors/502.http
+    errorfile 503 /etc/haproxy/errors/503.http
+    errorfile 504 /etc/haproxy/errors/504.http
+
 frontend Romanyerom_frontend
     bind *:80
     mode http
@@ -19,15 +52,17 @@ frontend Romanyerom_frontend
 backend Romanyerom_backend
     balance roundrobin
     server 316936-web-01 54.173.114.195:80 check
-    server 316936-web-02 3.84.158.211:80 check
-"
-echo "$server_config" | sudo tee -a /etc/haproxy/haproxy.cfg
+    server 316936-web-02 52.3.248.87:80 check
+EOT
 
 # Enable HAProxy to be started by init script
 echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
 
 # Testing the HAProxy configuration file
-sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+if ! haproxy -c -f /etc/haproxy/haproxy.cfg; then
+    echo "Failed to validate HAProxy configuration. Aborting." >&2
+    exit 1
+fi
 
-# Restart the HAProxy service
-sudo service haproxy restart
+# Restart HAProxy service
+systemctl restart haproxy
