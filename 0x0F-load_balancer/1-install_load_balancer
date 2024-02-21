@@ -14,7 +14,7 @@ server_config=\
 frontend Romanyerom_frontend
     bind *:80
     mode http
-    default_backend besthor_backend
+    default_backend Romanyerom_backend
 
 backend Romanyerom_backend
     balance roundrobin
