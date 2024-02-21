@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# performing a 301 moved permanently
+# customizing a 404 page
 
 sudo apt-get update
 sudo apt-get install -y nginx
