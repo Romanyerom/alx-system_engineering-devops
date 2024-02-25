@@ -1,1 +1,0 @@
-Strace is your friend 
